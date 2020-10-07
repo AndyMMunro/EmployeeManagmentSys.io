@@ -1,12 +1,12 @@
 {
-  "name": "EmployeeMangementSystem",
+  "name": "empmansys",
   "version": "1.0.0",
-  "description": "creats a data base from the CLI of employees and there departments",
+  "description": "creates a data base from the CLI of employees and there departments",
   "main": "connect.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Andy M",
   "license": "ISC",
   "dependencies": {
     "inquirer": "^6.2.1",

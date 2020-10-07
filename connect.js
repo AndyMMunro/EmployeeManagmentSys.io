@@ -19,8 +19,9 @@ var connection = mysql.createConnection({
 });
 
 connection.connect(function (err) {
+    console.log('connected');
     if (err) throw err;
-    runSearch();
+    start();
 });
 module.export = connection;
 
@@ -80,21 +81,15 @@ function addDepartment() {
     // prompt for info about the item being put up for auction
     inquirer
         .prompt([{
-            name: "Name",
+            name: "depname",
             type: "input",
             message: "What is the name of the department?",
-            validate: function (value) {
-                if (isNaN(value) === false) {
-                    return true;
-                }
-                return false;
-            }
         }])
         .then(function (answer) {
             // when finished prompting, insert a new item into the db with that info
             connection.query(
-                "INSERT INTO department SET ?", {
-                    name: answer.name
+                "INSERT INTO department (dep_name) VALUES (?)", {
+                    dep_name: answer.depname
                 },
                 function (err) {
                     if (err) throw err;
@@ -103,4 +98,4 @@ function addDepartment() {
                 }
             );
         });
-}
+};
