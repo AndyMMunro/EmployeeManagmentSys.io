@@ -67,7 +67,7 @@ function addInfo() {
             if (answer.depOrRoleOrEmp === "department") {
                 addDepartment();
             } else if (answer.depOrRoleOrEmp === "role") {
-                role();
+                addRole();
             } else if (answer.depOrRoleOrEmp === "employee") {
                 employee();
             } else {
@@ -101,19 +101,18 @@ function addDepartment() {
 };
 
 // function to handle posting new items up for auction
-function role() {
+function addRole() {
     // prompt for info about the item being put up for auction
     inquirer
         .prompt([{
                 name: "title",
                 type: "input",
-                message: "What is the employment?"
-
+                message: "What is the employees title?"
             },
             {
                 name: "salary",
                 type: "input",
-                message: "What is salary?"
+                message: "What is the employees salary?"
             }
         ])
         .then(function (answer) {
@@ -144,37 +143,11 @@ function viewAll() {
             choices: ["department", "role", "employee"]
         })
         .then(function (answer) {
-            var query = "SELECT department.dep_name FROM department";
-            if (answer.view === "department") {
-                connection.query(query, function (err, res) {
+            if (answer.action === "department") {
+                connection.query("SELECT * FROM department", function (err, res) {
                     console.log(res);
                 });
                 console.log("selected depertment");
             };
         });
-}
-//     inquirer
-//         .prompt({
-//             name: "view",
-//             type: "rawlist",
-//             message: "what would you like to view?",
-//             choices: ["department", "role", "employee"]
-//         })
-//         .then(function (answer) {
-//             var query = "SELECT department, role, employee FROM employees_db WHERE ?";
-//             if (answer.view === department) {
-
-//                 console.log("selected depertment");
-//             };
-
-
-//             connection.query(query, {
-//                 artist: answer.artist
-//             }, function (err, res) {
-//                 for (var i = 0; i < res.length; i++) {
-//                     console.log("Position: " + res[i].position + " || Song: " + res[i].song + " || Year: " + res[i].year);
-//                 }
-//                 runSearch();
-//             });
-//         });
-// }
+};
