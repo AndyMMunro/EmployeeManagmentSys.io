@@ -43,11 +43,11 @@ function start() {
                     addInfo();
                     break;
 
-                case "View all.":
-                    view();
+                case "View department, role or employee?":
+                    viewAll();
                     break;
 
-                case "Update all.":
+                case "Update department, role or employee?":
                     update();
                     break;
             }
@@ -88,7 +88,7 @@ function addDepartment() {
         .then(function (answer) {
             // when finished prompting, insert a new item into the db with that info
             connection.query(
-                "INSERT INTO department (dep_name) VALUES (?)", {
+                "INSERT INTO department SET ?", {
                     dep_name: answer.depname
                 },
                 function (err) {
@@ -99,3 +99,82 @@ function addDepartment() {
             );
         });
 };
+
+// function to handle posting new items up for auction
+function role() {
+    // prompt for info about the item being put up for auction
+    inquirer
+        .prompt([{
+                name: "title",
+                type: "input",
+                message: "What is the employment?"
+
+            },
+            {
+                name: "salary",
+                type: "input",
+                message: "What is salary?"
+            }
+        ])
+        .then(function (answer) {
+            // when finished prompting, insert a new item into the db with that info
+            connection.query(
+                "INSERT INTO emp_role SET ?", {
+                    title: answer.title,
+                    salary: answer.salary
+
+                },
+
+                function (err) {
+                    if (err) throw err;
+                    console.log("Your role was added!");
+                    start();
+                }
+            );
+        });
+};
+
+function viewAll() {
+    console.log("active");
+    inquirer
+        .prompt({
+            name: "action",
+            type: "list",
+            message: "What would you like to do?",
+            choices: ["department", "role", "employee"]
+        })
+        .then(function (answer) {
+            var query = "SELECT department.dep_name FROM department";
+            if (answer.view === "department") {
+                connection.query(query, function (err, res) {
+                    console.log(res);
+                });
+                console.log("selected depertment");
+            };
+        });
+}
+//     inquirer
+//         .prompt({
+//             name: "view",
+//             type: "rawlist",
+//             message: "what would you like to view?",
+//             choices: ["department", "role", "employee"]
+//         })
+//         .then(function (answer) {
+//             var query = "SELECT department, role, employee FROM employees_db WHERE ?";
+//             if (answer.view === department) {
+
+//                 console.log("selected depertment");
+//             };
+
+
+//             connection.query(query, {
+//                 artist: answer.artist
+//             }, function (err, res) {
+//                 for (var i = 0; i < res.length; i++) {
+//                     console.log("Position: " + res[i].position + " || Song: " + res[i].song + " || Year: " + res[i].year);
+//                 }
+//                 runSearch();
+//             });
+//         });
+// }
