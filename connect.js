@@ -105,9 +105,10 @@ function addRole() {
     // prompt for info about the item being put up for auction
     inquirer
         .prompt([{
-                name: "title",
-                type: "input",
-                message: "What is the employees title?"
+                name: "emptype",
+                type: "list",
+                message: "what is the employees title?",
+                choices: ["manager", "sales", "engineer"]
             },
             {
                 name: "salary",
@@ -119,12 +120,12 @@ function addRole() {
             // when finished prompting, insert a new item into the db with that info
             connection.query(
                 "INSERT INTO emp_role SET ?", {
-                    title: answer.title,
+                    title: answer.emptype,
                     salary: answer.salary
-
                 },
 
                 function (err) {
+                    console.log(answer)
                     if (err) throw err;
                     console.log("Your role was added!");
                     start();
@@ -148,6 +149,16 @@ function viewAll() {
                     console.log(res);
                 });
                 console.log("selected depertment");
+            } else if (answer.action === "role") {
+                connection.query("SELECT * FROM emp_role", function (err, res) {
+                    console.log(res);
+                });
+                console.log("selected role");
+            } else if (answer.action === "employee") {
+                connection.query("SELECT * FROM employee", function (err, res) {
+                    console.log(res);
+                });
+                console.log("selected employee");
             };
         });
 };
