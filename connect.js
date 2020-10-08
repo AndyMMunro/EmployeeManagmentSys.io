@@ -34,7 +34,7 @@ function start() {
             choices: [
                 "Add department, role or employee?",
                 "View department, role or employee?",
-                "Update department, role or employee?"
+                "Update employee?"
             ]
         })
         .then(function (answer) {
@@ -47,7 +47,7 @@ function start() {
                     viewAll();
                     break;
 
-                case "Update department, role or employee?":
+                case "Update employee?":
                     update();
                     break;
             }
@@ -63,7 +63,7 @@ function addInfo() {
             choices: ["department", "role", "employee"]
         })
         .then(function (answer) {
-            // based on their answer, either call the bid or the post functions
+            // directs to the function to waht you would like to add
             if (answer.depOrRoleOrEmp === "department") {
                 addDepartment();
             } else if (answer.depOrRoleOrEmp === "role") {
@@ -76,9 +76,9 @@ function addInfo() {
         });
 }
 
-// function to handle posting new items up for auction
+// function to handle posting new department
 function addDepartment() {
-    // prompt for info about the item being put up for auction
+    // prompt for info about the new department name
     inquirer
         .prompt([{
             name: "depname",
@@ -100,9 +100,9 @@ function addDepartment() {
         });
 };
 
-// function to handle posting new items up for auction
+// function to handle posting new roles
 function addRole() {
-    // prompt for info about the item being put up for auction
+    // prompt for info about the role
     inquirer
         .prompt([{
                 name: "emptype",
@@ -128,6 +128,50 @@ function addRole() {
                     console.log(answer)
                     if (err) throw err;
                     console.log("Your role was added!");
+                    start();
+                }
+            );
+        });
+};
+
+function employee() {
+    // prompt for info about the role
+    inquirer
+        .prompt([{
+                name: "firstName",
+                type: "input",
+                message: "What is the employees first name?"
+            },
+            {
+                name: "lastName",
+                type: "input",
+                message: "What is the employees last name?"
+            },
+            {
+                name: "role_id",
+                type: "number",
+                message: "Please give thy employee's role #"
+            }, {
+                name: "manager_id",
+                type: "number",
+                message: "Please give thy employee's manager id #"
+            }
+
+        ])
+        .then(function (answer) {
+            // when finished prompting, insert a new item into the db with that info
+            connection.query(
+                "INSERT INTO employee SET ?", {
+                    first_name: answer.firstName,
+                    last_name: answer.lastName,
+                    role_id: answer.role_id,
+                    manager_id: answer.manager_id
+                },
+
+                function (err) {
+                    console.log(answer)
+                    if (err) throw err;
+                    console.log("Your employee was added!");
                     start();
                 }
             );
@@ -162,3 +206,26 @@ function viewAll() {
             };
         });
 };
+
+function update() {
+    inquirer.prompt([{
+        name: "empNum",
+        type: "number",
+        message: "Please give employee id#"
+    }, {
+        name: "roleNum",
+        type: "number",
+        message: "Please give desired role id#"
+    }]).then(function (answer) {
+        let change = [
+            answer.empNum,
+            answer.roleNum
+        ]
+        let query = "UPDATE employee SET role_id = ? WHERE id = ?";
+        connection.query(query, change, function (err, res) {
+            if (err) throw err;
+            console.log("employee has been updated.");
+            start()
+        });
+    });
+}
