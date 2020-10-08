@@ -21,7 +21,7 @@ CREATE TABLE employee (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY, 
   first_name VARCHAR(30) NOT NULL,
   last_name VARCHAR(30) NOT NULL,
-  role_id INT UNSIGNED NOT NULL,
+  role_id INT UNSIGNED,
   INDEX role_ind (role_id),
   manager_id INT UNSIGNED,
   INDEX man_ind (manager_id),
