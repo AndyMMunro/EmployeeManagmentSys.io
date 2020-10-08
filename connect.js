@@ -131,7 +131,7 @@ function addRole() {
                 },
 
                 function (err) {
-                    console.log(answer)
+                    // console.log(answer)
                     if (err) throw err;
                     console.log("Your role was added!");
                     start();
@@ -197,18 +197,21 @@ function viewAll() {
             if (answer.action === "department") {
                 connection.query("SELECT * FROM department", function (err, res) {
                     console.log(res);
+                    start();
                 });
-                console.log("selected depertment");
+                // console.log("selected depertment");
             } else if (answer.action === "role") {
                 connection.query("SELECT * FROM emp_role", function (err, res) {
                     console.log(res);
+                    start();
                 });
-                console.log("selected role");
+                // console.log("selected role");
             } else if (answer.action === "employee") {
                 connection.query("SELECT * FROM employee", function (err, res) {
                     console.log(res);
+                    start();
                 });
-                console.log("selected employee");
+                // console.log("selected employee");
             };
         });
 };
