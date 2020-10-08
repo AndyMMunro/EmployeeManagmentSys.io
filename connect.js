@@ -112,8 +112,13 @@ function addRole() {
             },
             {
                 name: "salary",
-                type: "input",
+                type: "number",
                 message: "What is the employees salary?"
+            },
+            {
+                name: "department_id",
+                type: "number",
+                message: "what is the department number?"
             }
         ])
         .then(function (answer) {
@@ -121,7 +126,8 @@ function addRole() {
             connection.query(
                 "INSERT INTO emp_role SET ?", {
                     title: answer.emptype,
-                    salary: answer.salary
+                    salary: answer.salary,
+                    department_id: answer.department_id
                 },
 
                 function (err) {
